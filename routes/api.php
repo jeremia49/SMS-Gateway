@@ -20,8 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/sms', function (Request $request) {
-    if(null !== $request->input('unprocessed')){
-        $smss = sms::where('status', 0)->orderBy('created_at', 'ASC')->get();
+    if(null !== $request->input('queue')){
+        $smss = sms::where(function ($query) {
+            $query->where('status', '=', 0)
+                  ->orWhere('status', '=', 1);
+        })->orderBy('created_at', 'ASC')->get();
     }else{
         $smss = sms::orderBy('created_at', 'ASC')->get();
     }
@@ -29,33 +32,67 @@ Route::get('/sms', function (Request $request) {
     foreach ($smss as $sm) {
         array_push($ids,$sm->id);
     }
+
+    //return as text
+    if(null !== $request->input('asText')){
+        foreach ($ids as $id) {
+            echo($id.',');
+        }
+        return;
+    }
+
+    //return as json
     return $ids;
 });
 
 
-Route::get('/getSMS/{id}', function (int $id) {
+Route::get('/getSMS/{id}', function (Request $request, int $id) {
     $sm = sms::find($id);
-    return $sm;
+    //return as text
+    if(null !== $request->input('asText')){
+        echo($sm->number.','.$sm->content);
+        return;
+    }
+    //return as json
+    return $sm; 
 });
 
-Route::get('/procSMS/{id}', function (int $id) {
+Route::get('/procSMS/{id}', function (Request $request, int $id) {
     $sm = sms::find($id);
     $sm->status = 1;
     $sm->save();
+    //return as text
+    if(null !== $request->input('asText')){
+        echo '1';
+        return;
+    }
+    //return as json
     return $sm;
 });
 
-Route::get('/setSuccess/{id}', function (int $id) {
+Route::get('/setSuccess/{id}', function (Request $request, int $id) {
     $sm = sms::find($id);
     $sm->status = 2;
     $sm->save();
+    //return as text
+    if(null !== $request->input('asText')){
+        echo '1';
+        return;
+    }
+    //return as json
     return $sm;
 });
 
-Route::get('/setFailed/{id}', function (int $id) {
+Route::get('/setFailed/{id}', function (Request $request, int $id) {
     $sm = sms::find($id);
     $sm->status = -1;
     $sm->save();
+    //return as text
+    if(null !== $request->input('asText')){
+        echo '1';
+        return;
+    }
+    //return as json
     return $sm;
 });
 
@@ -64,7 +101,7 @@ Route::post('/createSMS', function (Request $request) {
     $sms->number = $request->input('number');
     $sms->content = $request->input('content');
     $sms->save();
-    return $sms->id;
+    return $sms;
 });
 
 
