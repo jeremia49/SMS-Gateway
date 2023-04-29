@@ -104,4 +104,7 @@ Route::post('/createSMS', function (Request $request) {
     return $sms;
 });
 
+Route::get('/ping', function (Request $request) {
+    return "pong"; 
+});
 
