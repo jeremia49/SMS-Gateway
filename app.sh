@@ -1,6 +1,7 @@
 #!/bin/env bash
 
 source "$(dirname "${BASH_SOURCE[0]}")/config.env"
+source "$(dirname "${BASH_SOURCE[0]}")/device.sh"
 
 _QUEUEHOST_=$APIHOST
 __QUEUENOW__=-1
@@ -101,7 +102,7 @@ function main() {
                         echo "Gagal announce ACK"
                         sleep 2
                     else
-                        sendSMS
+                        sendSMS $__QUEUENUMBER__ $__QUEUECONTENT__
                         status=$?
                         if [[ $status -ne 0 ]]
                         then
