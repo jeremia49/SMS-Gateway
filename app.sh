@@ -15,6 +15,8 @@ __QUEUECONTENT__=""
 # ln -s /system/bin/busybox /app/bin/base64
 # ln -s /system/bin/busybox /app/bin/sha256sum
 # ln -s /system/bin/busybox /app/bin/cut
+# ln -s /system/bin/busybox /app/bin/sed
+
 
 function getLatestQueue(){
     __QUEUENOW__=-1
