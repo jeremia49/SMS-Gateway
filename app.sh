@@ -15,7 +15,7 @@ function getLatestQueue(){
     curl -s "$_QUEUEHOST_/ping" >/dev/null 2>&1; #cek koneksi
     if [[ $? -eq 0 ]]
     then
-        local req=$(curl -s "$_QUEUEHOST_/api/sms?queue=1&asText=1")
+        local req=$(curl -sk "$_QUEUEHOST_/api/sms?queue=1&asText=1")
         local firstQ=$(echo $req |awk -F ',' '{print $1}')
         if [[ ! -z "$firstQ" && "$firstQ" -ge 1 ]] 
         then
@@ -32,7 +32,7 @@ function getLatestQueue(){
 function getMessageContent(){
     __QUEUENUMBER__=-1
     __QUEUECONTENT__=""
-    local req=$(curl -s "$_QUEUEHOST_/api/getSMS/$__QUEUENOW__?asText=1")
+    local req=$(curl -sk "$_QUEUEHOST_/api/getSMS/$__QUEUENOW__?asText=1")
     if [[ ! -z "$req" ]]
     then
         __QUEUENUMBER__=$(echo $req |awk -F ',' '{print $1}')
@@ -43,7 +43,7 @@ function getMessageContent(){
 }
 
 function announceACK(){
-    local req=$(curl -s "$_QUEUEHOST_/api/procSMS/$__QUEUENOW__?asText=1")
+    local req=$(curl -sk "$_QUEUEHOST_/api/procSMS/$__QUEUENOW__?asText=1")
     if [[ (! -z "$req") && ($req == "1")]]
     then
         return 0
@@ -53,7 +53,7 @@ function announceACK(){
 
 
 function announceSuccess(){
-    local req=$(curl -s "$_QUEUEHOST_/api/setSuccess/$__QUEUENOW__?asText=1")
+    local req=$(curl -sk "$_QUEUEHOST_/api/setSuccess/$__QUEUENOW__?asText=1")
     if [[ (! -z "$req") && ($req == "1")]]
     then
         return 0
@@ -62,7 +62,7 @@ function announceSuccess(){
 }
 
 function announceFailed(){
-    local req=$(curl -s "$_QUEUEHOST_/api/setFailed/$__QUEUENOW__?asText=1")
+    local req=$(curl -sk "$_QUEUEHOST_/api/setFailed/$__QUEUENOW__?asText=1")
     if [[ (! -z "$req") && ($req == "1")]]
     then
         return 0
