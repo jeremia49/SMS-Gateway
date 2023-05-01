@@ -8,11 +8,17 @@ __QUEUENOW__=-1
 __QUEUENUMBER__=-1
 __QUEUECONTENT__=""
 
-
+# ln -s /system/bin/busybox /app/bin/xxd
+# ln -s /system/bin/busybox /app/bin/grep
+# ln -s /system/bin/busybox /app/bin/curl
+# ln -s /system/bin/busybox /app/bin/tr
+# ln -s /system/bin/busybox /app/bin/base64
+# ln -s /system/bin/busybox /app/bin/sha256sum
+# ln -s /system/bin/busybox /app/bin/cut
 
 function getLatestQueue(){
     __QUEUENOW__=-1
-    curl -s "$_QUEUEHOST_/ping" >/dev/null 2>&1; #cek koneksi
+    curl -sk "$_QUEUEHOST_/ping" >/dev/null 2>&1; #cek koneksi
     if [[ $? -eq 0 ]]
     then
         local req=$(curl -sk "$_QUEUEHOST_/api/sms?queue=1&asText=1")

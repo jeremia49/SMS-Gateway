@@ -34,8 +34,8 @@ function getSesTokInfo(){
                 -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0' \
                 -H "Cookie: ${__SESINFO__}" 
         )
-        __SESINFO__=$(echo $req | grep -oP '(?<=<SesInfo>).*(?=<\/SesInfo>)')
-        __TOKINFO__=$(echo $req | grep -oP '(?<=<TokInfo>).*(?=<\/TokInfo>)')
+        __SESINFO__=$(echo $req | sed -n 's/.*<SesInfo>\(.*\)<\/SesInfo>.*/\1/p' | awk '{print "" $0 ""}' )
+        __TOKINFO__=$(echo $req | sed -n 's/.*<TokInfo>\(.*\)<\/TokInfo>.*/\1/p' | awk '{print "" $0 ""}' )
         # echo $__SESINFO__
         return 0
     else
@@ -138,3 +138,4 @@ function sendSMS(){
 
 # sendSMS "xxxx" "Baik, terimakasih !!"
 # getInitializeCookie
+# getSesTokInfo 0   
