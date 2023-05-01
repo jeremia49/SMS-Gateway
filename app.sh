@@ -51,9 +51,6 @@ function announceACK(){
     return -1
 }
 
-function sendSMS(){
-    return 0
-}
 
 function announceSuccess(){
     local req=$(curl -s "$_QUEUEHOST_/api/setSuccess/$__QUEUENOW__?asText=1")

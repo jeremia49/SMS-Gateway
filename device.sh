@@ -101,7 +101,7 @@ function login(){
         local getCookieHeader=$(echo "${req}" | grep -i set-cookie)
         local getSession=$(echo -n $getCookieHeader | cut -d'=' -f2 | cut -d';' -f1)
         __SESINFO__=$getSession
-
+        echo "Login Berhasil"
         return 0
     else
         return -1
@@ -127,6 +127,7 @@ function sendSMS(){
         )
         if echo $req | grep -qi "error"; then
             echo "Gagal mengirim pesan"
+            return -1
         fi
         return 0
     else
