@@ -10,13 +10,13 @@ __QUEUECONTENT__=""
 
 # ln -s /system/bin/busybox /app/bin/xxd
 # ln -s /system/bin/busybox /app/bin/grep
-# ln -s /system/bin/busybox /app/bin/curl
 # ln -s /system/bin/busybox /app/bin/tr
 # ln -s /system/bin/busybox /app/bin/base64
 # ln -s /system/bin/busybox /app/bin/sha256sum
 # ln -s /system/bin/busybox /app/bin/cut
 # ln -s /system/bin/busybox /app/bin/sed
 
+# ln -s /system/bin/busybox /app/bin/curl (busybox doesn't include curl)
 
 function getLatestQueue(){
     __QUEUENOW__=-1
@@ -107,7 +107,7 @@ function main() {
                         echo "Gagal announce ACK"
                         sleep 2
                     else
-                        sendSMS $__QUEUENUMBER__ $__QUEUECONTENT__
+                        sendSMS "$__QUEUENUMBER__" "$__QUEUECONTENT__"
                         status=$?
                         if [[ $status -ne 0 ]]
                         then
